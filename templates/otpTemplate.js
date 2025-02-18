@@ -77,6 +77,31 @@ const otpTemplate = (otp) => {
         text-decoration: none;
         margin: 0 10px;
       }
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100%;
+          padding: 10px;
+        }
+        .banner img {
+          max-height: 150px;
+        }
+        .main-content {
+          padding: 10px;
+        }
+        .otp {
+          font-size: 20px;
+        }
+        .otp div {
+          padding: 8px;
+          margin: 3px;
+        }
+        .footer {
+          font-size: 10px;
+        }
+        .social-icons a img {
+          width: 20px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -95,7 +120,7 @@ const otpTemplate = (otp) => {
         />
       </div>
       <div class="main-content">
-        <h2>Hey User,</h2>
+        <h2>Hi Lokachi,</h2>
         <p>
           Here is your One Time Password (OTP).<br />
           Please enter this code to verify your email address for Corporate
