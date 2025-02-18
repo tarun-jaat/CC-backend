@@ -95,7 +95,7 @@ const otpTemplate = (otp) => {
         />
       </div>
       <div class="main-content">
-        <h2>Hi Lokachi,</h2>
+        <h2>Hey User,</h2>
         <p>
           Here is your One Time Password (OTP).<br />
           Please enter this code to verify your email address for Corporate
