@@ -18,24 +18,24 @@ const OTPSchema = new mongoose.Schema({
 });
 
 // Define a function to send emails
-async function sendVerificationEmail(email, otp) {
+async function sendVerificationEmail(email, otp,userName) {
 // Send the email
 	try {
 		const mailResponse = await mailSender(
 			email,
 			"Verification Email",
-			emailTemplate(otp)
+			emailTemplate(otp,userName),
 		);
-		console.log("Email sent successfully: ", mailResponse);
+		// console.log("Email sent successfully: ", mailResponse);
 	} catch (error) {
-		console.log("Error occurred while sending email: ", error);
+		// console.log("Error occurred while sending email: ", error);
 		throw error;
 	}
 }
   
 // Define a post-save hook to send email after the document has been saved
 OTPSchema.pre("save", async function (next) {
-	console.log("New document saved to database");
+	// console.log("New document saved to database");
 
 	// Only send an email when a new document is created 
 	if (this.isNew) {

@@ -11,24 +11,24 @@ const mailSender = async (email, title, body) => {
             secure: true,
             auth: {
                 user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS,
+                pass: process.env.MAIL_PASS, 
             },
             tls: {
                 rejectUnauthorized: false
             }
         });
-  
+
         let info = await transporter.sendMail({
             from: `"Corporate Cruise" <${process.env.MAIL_USER}>`,
             to: `${email}`,
             subject: `${title}`,
             html: `${body}`,
         });
-        console.log(info);
+        // console.log(info);
         return info;
     } catch (error) {
-        console.log(error.message);
-        return error;
+        // console.log(error.message);
+        return { error: error.message };
     }
 }
 

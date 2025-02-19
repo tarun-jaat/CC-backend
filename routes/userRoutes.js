@@ -11,14 +11,6 @@ const generateReferralId = () => {
   return Math.random().toString(36).substr(2, 7).toUpperCase();
 };
 
-// Faster OTP generation using crypto module
-const generateOTP = () => crypto.randomInt(100000, 999999).toString();
-
-// Ensure OTP does not clash
-const isUniqueOTP = async (otp) => {
-  const existingUser = await User.findOne({ otp });
-  return !existingUser;
-};
 
 router.post('/signup', async (req, res) => {
   try {
@@ -82,12 +74,14 @@ router.post('/signup', async (req, res) => {
         $inc: { referralCount: 1 },
         $push: { referredUsers: user._id }
       });
+      referrer.referralCount += 1; 
+      await referrer.save(); 
     }
 
     res.status(201).json({
       success: true,
       referralId: newReferralId,
-      referralCount: referrer ? referrer.referralCount + 1 : 0
+      referralCount: referrer ? referrer.referralCount : 0
     });
   } catch (error) {
     res.status(400).json({
@@ -108,7 +102,8 @@ router.post('/send-otp', async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-    const result = await OTP.findOne({ otp: otp });
+    const userName = user.name;
+    const result = await OTP.findOne({ otp: otp ,userName: userName});
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -116,18 +111,18 @@ router.post('/send-otp', async (req, res) => {
     }
     const otpPayload = { email, otp };
     const otpBody = await OTP.create(otpPayload);
-    console.log("OTP Body", otpBody);
+    // console.log("OTP Body", otpBody);
     res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,
     });
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 });
 
-router.post("/verify-otp", async (req, res) => {
+router.post("/verify-otp", async (req, res) => { 
   try {
     const { email, otp } = req.body;
 
@@ -156,7 +151,14 @@ router.post("/verify-otp", async (req, res) => {
         message: "The OTP has expired",
       });
     }
-
+    
+    const user = await User.findOne({ email });    
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
     // Generate JWT token
     const token = jwt.sign({ email }, 'mysecretkey', { expiresIn: '1h' });
 
@@ -167,6 +169,13 @@ router.post("/verify-otp", async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "OTP verified successfully",
+      token: token,
+      userData: {
+        name: user.name,
+        email: user.email,
+        referralId: user.referralId,
+        referralCount: user.referralCount, 
+      },
     });
 
   } catch (error) {
