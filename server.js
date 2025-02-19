@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend port
+  origin: 'https://cc-frontend-five.vercel.app/', // Your frontend port
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
