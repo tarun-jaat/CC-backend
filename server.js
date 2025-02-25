@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 app.use(cors({
-  origin: 'https://cc-frontend-five.vercel.app/', // Your frontend port
+  origin: ['https://corporatecruise.in/', 'https://www.corporatecruise.in/'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -28,10 +28,6 @@ connectWithRetry();
 
 app.use('/api/schedule-meeting', meetingRoutes);
 app.use('/api/users', userRoutes);
-
-
-
-
 
 const PORT = process.env.PORT || 5001;
 
