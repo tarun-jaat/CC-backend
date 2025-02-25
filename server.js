@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 app.use(cors({
-  origin: ['https://corporatecruise.in/', 'https://www.corporatecruise.in/'], 
+  origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
