@@ -7,18 +7,10 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-const allowedDomains = ['https://corporatecruise.in/', 'https://www.corporatecruise.in/'];
+// const allowedDomains = ['https://corporatecruise.in/', 'https://www.corporatecruise.in/'];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (allowedDomains.indexOf(origin) === -1) {
-      var msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin:{'*'},
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
