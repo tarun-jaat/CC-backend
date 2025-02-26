@@ -10,6 +10,10 @@ const OTPSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	userName: { // Add userName to the schema
+		type: String,
+		required: true,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now, 
@@ -39,7 +43,7 @@ OTPSchema.pre("save", async function (next) {
 
 	// Only send an email when a new document is created 
 	if (this.isNew) {
-		await sendVerificationEmail(this.email, this.otp);
+		await sendVerificationEmail(this.email, this.otp,this.userName,);
 	}
 	next();
 });

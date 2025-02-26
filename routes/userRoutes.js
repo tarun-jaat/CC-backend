@@ -109,7 +109,7 @@ router.post('/send-otp', async (req, res) => {
         upperCaseAlphabets: false,
       });
     }
-    const otpPayload = { email, otp };
+    const otpPayload = { email, otp, userName }; // Include userName in the payload
     const otpBody = await OTP.create(otpPayload);
     // console.log("OTP Body", otpBody);
     res.status(200).json({
