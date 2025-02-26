@@ -7,10 +7,16 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-// const allowedDomains = ['https://corporatecruise.in/', 'https://www.corporatecruise.in/'];
+const allowedDomains = ['https://corporatecruise.in', 'https://www.corporatecruise.in'];
 
 app.use(cors({
-  origin:{'*'},
+  origin: (origin, callback) => {
+    if (!origin || allowedDomains.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
